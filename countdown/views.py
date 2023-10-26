@@ -4,14 +4,6 @@ from django.views import generic
 from .models import OneTimeEvent, RepeatableEvent
 
 
-class IndexView(generic.ListView):
-    template_name = "countdown/index.html"
-    context_object_name = "all_countdowns"
-
-    def get_queryset(self):
-        return {'one_time_events': OneTimeEvent.objects.all(), 'repeatable_events': RepeatableEvent.objects.all()}
-
-
 def index(request):
     context = {'main': "countdown/index.html", 'one_time_events': OneTimeEvent.objects.all(), 'repeatable_events': RepeatableEvent.objects.all()}
     return render(request, "countdown/base.html", context)
