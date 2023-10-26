@@ -1,0 +1,12 @@
+<h2>Repeatable events:</h2>
+<ul>
+    {% for event in repeatable_events %}
+        <li><a class="link" href="{% url 'countdown:repeatable' event.id %}">{{ event.event_name }}</a></li>
+    {% endfor %}
+</ul>
+<h2>One time events: </h2>
+<ul>
+    {% for event in one_time_events %}
+        <li><a class="link" href="{%  url 'countdown:onetime' event.id %}">{{ event.event_name }}</a></li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-size: 16px;
+    font-family: Ubuntu, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header styles */
+header {
+    background: linear-gradient(45deg, #001fa6, #94009f);
+    color: #fff;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu {
+    display: flex;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+}
+
+.menu li {
+    margin-right: 20px;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Main content styles */
+main {
+    flex: 1;
+    color: white;
+    padding: 2em;
+    background: #181818;
+}
+
+/* Footer styles */
+footer {
+    background: linear-gradient(45deg,  #001fa6, #94009f);
+    color: #fff;
+    text-align: center;
+    padding: 1em;
+}
+
+footer a{
+    color: #00ff95;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    main {
+        padding: 1em;
+    }
+
+    .menu {
+        flex-direction: column;
+    }
+
+    .menu li {
+        margin: 10px 0;
+    }
+
+}
+
+@media (max-width: 576px) {
+    header {
+        font-size: 1.5rem;
+    }
+    main {
+        font-size: 0.9rem;
+    }
+    footer {
+        font-size: 1rem;
+    }
+}
+.link{
+    color: #7e89ce;
+}
+.GoTo{
+    margin-top: 15px;
+    background-color: #001fa6;
+    font-size: 20px;
+    color: white;
+    border-radius: 10px;
+    padding: 15px;
+    border: #7e89ce 1px ;
+}
+.GoTo:hover{
+    background-color: #000e49;
+    transition: background-color 600ms;
+}
+
+.box{
+    background: rgba(255, 255, 255, 0.5);
+    width: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    float: left;
+}
+.lower{
+    display: flex;
+    row-gap:2px;
+    align-items: center;
+    align-content: center;
+    width: fit-content;
+    margin: -15px auto 0 auto;
+}
+.upper{
+    display: flex;
+    margin: 20px auto 0 auto;
+    align-items: center;
+    align-content: center;
+    width: fit-content;
+}
