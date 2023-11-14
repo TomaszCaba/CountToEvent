@@ -1,0 +1,25 @@
+td{
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 9px 20px 9px 20px;
+}
+table{
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+#manage{
+    width: 400px;
+}
+#plus{
+    width: 20px;
+    height: 20px;
+    float: right;
+}
+#heading{
+    margin-bottom: 12px;
+    float: left;
+}
+#tab{
+    width: 400px;
+    clear: both;
+}

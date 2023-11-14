@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        {% block title %}
+                <title>{{ title }}</title>
+        {% endblock %}
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'countdown/style/style.css' %}">
+        {% block css %}
+            {% for css in css %}
+                <link rel="stylesheet" type="text/css" href="{% static css %}">
+            {% empty %}
+
+            {% endfor %}
+        {% endblock %}
+        <script src="https://kit.fontawesome.com/b582999c8a.js" crossorigin="anonymous"></script>
+
+    </head>
+    <body>
+        <header>
+            <h1>Count to event</h1>
+            <div class="menu">
+                <ul>
+                    <li><a href="{% url 'countdown:index' %}">Home&nbsp;&nbsp;<i class="fa-solid fa-house"></i></a></li>
+                    <li><a href="{% url 'countdown:profile' %}">Account&nbsp;&nbsp;<i style="font-size: 20px" class="fa-solid fa-circle-user"></i></a></li>
+                    {% if user.get_username %}
+                    <li><a href="{% url 'logout' %}">Logout&nbsp;&nbsp;<i style="font-size: 20px" class="fa-solid fa-right-from-bracket"></i></a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </header>
+        <main>
+            {% block main %}
+
+            {% endblock %}
+        </main>
+        <footer>
+            &copy; 2023 <a href="https://github.com/TomaszCaba">Tomasz Caba</a>
+        </footer>
+    </body>
+</html>

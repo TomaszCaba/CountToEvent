@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+
+{% block main    %}
+    <form action="{% url 'countdown:update' event_type countdown.id %}" method="POST">
+    {% csrf_token %}
+    <div class="field"><label for="event_name">Event name: </label>
+        <input type="text" name="event_name" id="event_name" value="{{ countdown.event_name }}" required></div>
+
+        {% if event_type == "onetime" %}
+    <div class="field oneTimeDiv"><label for="event_date">Date: </label>
+        <input class="onetimeField" type="date" name="event_date" id="event_date" value="{{ event_date }}" required></div>
+        {% endif %}
+
+        {% if event_type == "repeatable" %}
+    <div class="field repeatableDiv"><label for="event_day_of_month">Event day of month:</label>
+        <input class="repeatableField" type="text" name="event_day_of_month" maxlength="3" id="event_day_of_month"
+        value="{{ countdown.event_day_of_month }}"></div>
+    <div class="field repeatableDiv"><label for="event_day_of_week">Event day of week:</label>
+        <select class="repeatableField" name="event_day_of_week" id="event_day_of_week" >
+      <option {% if countdown.event_day_of_week == "1" %}selected="selected"{% endif %} value="1">Monday</option>
+      <option {% if countdown.event_day_of_week == "2" %}selected="selected"{% endif %} value="2">Tuesday</option>
+      <option {% if countdown.event_day_of_week == "3" %}selected="selected"{% endif %} value="3">Wednesday</option>
+      <option {% if countdown.event_day_of_week == "4" %}selected="selected"{% endif %} value="4">Thursday</option>
+      <option {% if countdown.event_day_of_week == "5" %}selected="selected"{% endif %} value="5">Friday</option>
+      <option {% if countdown.event_day_of_week == "6" %}selected="selected"{% endif %} value="6">Saturday</option>
+      <option {% if countdown.event_day_of_week == "0" %}selected="selected"{% endif %} value="0">Sunday</option>
+    </select></div>
+    {% endif %}
+
+    <div class="field"><label for="event_time">Event time:</label>
+        <input type="time" name="event_time" required id="event_time" value="{{ event_time }}"></div>
+
+    <div class="field"><input type="hidden" name="user" value="{{ user.get_username }}"></div>
+    <div class="field"><input type="submit" value="Submit"></div>
+</form>
+<script>
+    {% if event_type == "onetime" %}
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('event_date').setAttribute('min', today);
+        const submitButton = document.querySelector("input[type=submit]");
+
+        document.getElementById("event_date").addEventListener("change", validateDateTime);
+        document.getElementById("event_time").addEventListener("change", validateDateTime);
+
+        function validateDateTime() {
+            const selectedDate = document.getElementById("event_date").value;
+            const selectedTime = document.getElementById("event_time").value;
+
+            const selectedDateTime = new Date(selectedDate + " " + selectedTime).getTime();
+            const currentDateTime = new Date().getTime();
+
+            if (selectedDateTime < currentDateTime) {
+                submitButton.disabled = true;
+                alert("You can't select a past date and time.");
+            } else {
+                submitButton.disabled = false;
+            }
+        }
+    {% endif %}
+</script>
+{% endblock %}

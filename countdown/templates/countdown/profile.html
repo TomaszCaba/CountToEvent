@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}
+    <title>{{ user.get_username }}'s panel</title>
+{% endblock %}
+{% block main    %}
+    <h2>Hi, {{ user.username }}</h2>
+    <div id="manage">
+        <h2 id="heading">Manage your counters:</h2>
+        <a href="{% url 'countdown:createForm' %}"><i class="fa-solid fa-plus" id="plus" style="font-size: 25px"></i></a>
+        <table id="tab">
+            {% for event in repeatable_events %}
+                <tr>
+                    <td>{{ event.event_name }}</td>
+                    <td><a href="{% url 'countdown:deleteForm' 'repeatable' event.id %}"><i class="fa-solid fa-trash-can"></i></a></td>
+                    <td><a href="{% url 'countdown:updateForm' 'repeatable' event.id %}"><i class="fa-solid fa-pencil"></i></a></td>
+                </tr>
+            {% endfor %}
+            {% for event in one_time_events %}
+                <tr>
+                    <td>{{ event.event_name }}</td>
+                    <td><a href="{% url 'countdown:deleteForm' 'onetime' event.id %}"><i class="fa-solid fa-trash-can"></i></a></td>
+                    <td><a href="{% url 'countdown:updateForm' 'onetime' event.id %}"><i class="fa-solid fa-pencil"></i></a></td>
+                </tr>
+                {% endfor %}
+        </table>
+    </div>
+{% endblock %}

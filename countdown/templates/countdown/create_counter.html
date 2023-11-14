@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock %}
+
+{% block main    %}
+<form action="{% url 'countdown:create' %}" method="POST">
+    {% csrf_token %}
+    <div class="field"><label for="event_name">Event name: </label>
+        <input type="text" name="event_name" id="event_name" required></div>
+    <div class="field">
+        <input type="radio" name="counter_type" class="counter_type" id="repeatable" value="repeatable" required>
+        <label for="repeatable">Repeatable event</label></div>
+
+    <div class="field">
+        <input type="radio" name="counter_type" class="counter_type" id="onetime" value="onetime" required>
+        <label for="onetime">One time event</label></div>
+
+    <div class="field oneTimeDiv"><label for="event_date">Date: </label>
+        <input class="onetimeField" type="date" name="event_date" id="event_date"></div>
+
+    <div class="field repeatableDiv"><label for="event_day_of_month">Event day of month:</label>
+        <input class="repeatableField" type="text" name="event_day_of_month" maxlength="3" id="event_day_of_month"></div>
+
+    <div class="field repeatableDiv"><label for="event_day_of_week">Event day of week:</label>
+        <select class="repeatableField" name="event_day_of_week" id="event_day_of_week">
+      <option value="" selected="">---------</option>
+      <option value="1">Monday</option>
+      <option value="2">Tuesday</option>
+      <option value="3">Wednesday</option>
+      <option value="4">Thursday</option>
+      <option value="5">Friday</option>
+      <option value="6">Saturday</option>
+      <option value="0">Sunday</option>
+    </select></div>
+
+    <div class="field"><label for="event_time">Event time:</label>
+        <input type="time" name="event_time" required id="event_time"></div>
+
+    <div class="field"><input type="hidden" name="user" value="{{ user.get_username }}"></div>
+    <div class="field"><input type="submit" value="Submit"></div>
+</form>
+<script>
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('event_date').setAttribute('min', today);
+
+    let oneTimeDivs = document.querySelectorAll(".oneTimeDiv");
+    let repeatableDivs = document.querySelectorAll(".repeatableDiv");
+    let oneTimeFields = document.querySelectorAll(".oneTimeField");
+    let repeatableFields = document.querySelectorAll(".repeatableField");
+    let eventDayOfMonth = document.getElementById('event_day_of_month');
+
+    let counter_type_radios = document.getElementsByClassName('counter_type');
+    let eventDayOfWeek = document.getElementById('event_day_of_week');
+
+    // Function to hide both sets of divs
+    function hideDivs() {
+        for (let i = 0; i < oneTimeDivs.length; i++) {
+            oneTimeDivs[i].style.display = "none";
+            if (oneTimeFields[i]) {
+                oneTimeFields[i].removeAttribute('required');
+            }
+        }
+        for (let i = 0; i < repeatableDivs.length; i++) {
+            repeatableDivs[i].style.display = "none";
+            if (repeatableFields[i]) {
+                repeatableFields[i].removeAttribute('required');
+            }
+            if (eventDayOfMonth) {
+                eventDayOfMonth.removeAttribute('required');
+            }
+        }
+    }
+
+    // Initially hide both sets of divs
+    hideDivs();
+
+    // Event listener to show "one-time" divs
+    counter_type_radios[1].addEventListener('click', function () {
+        hideDivs(); // Hide both sets of divs
+        for (let i = 0; i < oneTimeDivs.length; i++) {
+            oneTimeDivs[i].style.display = "flex";
+            if (oneTimeFields[i]) {
+                oneTimeFields[i].setAttribute('required', true);
+            }
+        }
+    });
+
+    // Event listener to show "repeatable" divs
+    counter_type_radios[0].addEventListener('click', function () {
+        hideDivs(); // Hide both sets of divs
+        for (let i = 0; i < repeatableDivs.length; i++) {
+            repeatableDivs[i].style.display = "flex";
+        }
+    });
+
+    if (counter_type_radios[1]) {
+        const submitButton = document.querySelector("input[type=submit]");
+
+        document.getElementById("event_date").addEventListener("change", validateDateTime);
+        document.getElementById("event_time").addEventListener("change", validateDateTime);
+
+        function validateDateTime() {
+            const selectedDate = document.getElementById("event_date").value;
+            const selectedTime = document.getElementById("event_time").value;
+
+            const selectedDateTime = new Date(selectedDate + " " + selectedTime).getTime();
+            const currentDateTime = new Date().getTime();
+
+            if (selectedDateTime < currentDateTime) {
+                submitButton.disabled = true;
+                alert("You can't select a past date and time.");
+            } else {
+                submitButton.disabled = false;
+            }
+        }
+    }
+</script>
+
+
+
+
+{% endblock %}

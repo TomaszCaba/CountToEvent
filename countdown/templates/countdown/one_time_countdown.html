@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block main    %}
+    {% if countdown %}
+        <div id="counting"></div>
+    {% else %}
+        <h1>This event doesn't exist.</h1>
+    {% endif %}
+    <a href="{% url 'countdown:index' %}"><button class="GoTo">Other countdowns</button></a>
+    {% load static %}
+    <script>
+    // Get the countdown element by its ID
+        let count_div = document.getElementById('counting');
+        let time_str = "{{ countdown.event_time }}".replaceAll(',', "").replaceAll('.', "")
+        const event_time= time_str.split(" ");
+        for (let timeListKey in event_time) {
+            console.log(event_time[timeListKey])
+        }
+        const months = {'jan': 0, 'feb': 1, 'mar': 2, 'apr': 3, 'may': 4, 'jun': 5, 'jul': 6, 'aug': 7, 'sep': 8, 'oct': 9, 'nov': 10, 'dec': 11}
+
+        let eventHours = parseInt(event_time[3].split(":")[0]);
+        let eventMinutes = parseInt((event_time[3].split(":")[1]!== "undefined") ? event_time[3].split(":")[1] : "00");
+        let eventSeconds = 0;
+        if(event_time[4] === "pm"){
+            eventHours = parseInt(eventHours) + 12 + ""
+        }
+        const currentDate = new Date();
+        let nextEventDate = new Date();
+        nextEventDate.setHours(eventHours, eventMinutes, eventSeconds);
+        nextEventDate.setFullYear(parseInt(event_time[2]), months[event_time[0].toLowerCase()], parseInt(event_time[1]))
+        console.log(nextEventDate)
+
+
+        // Define a function to update the countdown
+        function updateCountdown(eventDate) {
+            const currentDate = new Date();
+
+            // Calculate the time remaining until the event
+            const timeRemaining = eventDate - currentDate;
+            // Calculate days, hours, minutes, and seconds remaining
+            const daysRemaining = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+            const hoursRemaining = Math.floor(timeRemaining % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
+            const minutesRemaining = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const secondsRemaining = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            // Update the countdown display
+            count_div.innerHTML = `<h2>{{ countdown.event_name }}</h2> will be in<br><div class="upper"><div class="box">${daysRemaining} days</div></div><br><div class="lower"><div class="box">${format_time(hoursRemaining)}</div>:<div class="box">${format_time(minutesRemaining)}</div>:<div class="box">${format_time(secondsRemaining)}</div></div>`;
+        }
+
+        // Call the updateCountdown function initially
+        updateCountdown(nextEventDate);
+
+        // Update the countdown every second (1000 milliseconds)
+        setInterval(updateCountdown, 1000, nextEventDate);
+
+        // function add zero before hours, minutes, seconds if they are lower than 10 to make time look like this "04:02:07"
+        function format_time(timeComponent) {
+            return (timeComponent < 10) ? "0" + timeComponent : timeComponent;
+        }
+    </script>
+{% endblock %}

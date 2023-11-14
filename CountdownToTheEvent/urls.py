@@ -6,5 +6,6 @@ from django.shortcuts import redirect
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("countdown/", include("countdown.urls")),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('', lambda request: redirect('countdown/', permanent=True)),
 ]

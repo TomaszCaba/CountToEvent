@@ -33,6 +33,11 @@ header {
 
 .menu li {
     margin-right: 20px;
+    border-left: white 1px solid;
+    padding-left: 20px;
+    height: 30px;
+    align-items: center;
+    display: flex;
 }
 
 .menu a {
@@ -87,8 +92,8 @@ footer a{
         font-size: 1rem;
     }
 }
-.link{
-    color: #7e89ce;
+a{
+    color: #00ff95;
 }
 .GoTo{
     margin-top: 15px;
